@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  nifi:
+    image: apache/nifi:latest
+    container_name: nifi
+    user: root
+    ports:
+      - 8443:8443
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=${SINGLE_USER_CREDENTIALS_USERNAME}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${SINGLE_USER_CREDENTIALS_PASSWORD}
+    volumes:
+      - ./project_files:/opt/nifi/nifi-current/project_files
+    command: >
+      sh -c "
+      chmod -R 777 /opt/nifi/nifi-current/project_files &&
+      /opt/nifi/nifi-current/bin/nifi.sh run
+      "
+    env_file: .env
